@@ -59,7 +59,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
   const domain = getDomainFromReqHeader(req.headers);
   const images = await getImagesOfDomain(domain);
 
-  const homeData = await axios(
+  const { data: homeData } = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
       domain: domain,
     }).toString()}`
