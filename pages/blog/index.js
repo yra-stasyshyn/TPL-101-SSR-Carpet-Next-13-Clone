@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-page-custom-font */
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -6,7 +7,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Breadcrumbs, Container } from "../../components/common";
 import { Footer, Nav } from "../../components/containers";
-import axios from "axios";
+import { getDomainFromReqHeader } from "../../helpers/getDomainFromReqHeader";
+import { getImagesOfDomain } from "../../helpers/getImagesOfDomain";
 
 const Page = ({ data, breadcrumbs, DOMAIN, images }) => {
 
@@ -143,7 +145,8 @@ const Page = ({ data, breadcrumbs, DOMAIN, images }) => {
 };
 
 export async function getServerSideProps({req}) {
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const domain = getDomainFromReqHeader(req.headers);
+  const images = await getImagesOfDomain(domain);
 
   const breadcrumbs = [
     {
@@ -162,8 +165,6 @@ export async function getServerSideProps({req}) {
       type: "blog",
     }).toString()}`
   );
-
-  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
 
   return {
     props: {

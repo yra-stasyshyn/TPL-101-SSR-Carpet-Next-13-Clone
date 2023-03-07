@@ -1,5 +1,6 @@
 import axios from "axios";
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import { getImagesOfDomain } from "../helpers/getImagesOfDomain";
 
 const MyDocument = (props = {}) => {
   const { faviconImage, DOMAIN } = props;
@@ -56,7 +57,7 @@ MyDocument.getInitialProps = async (ctx) => {
     if (!DOMAIN) {
       return initialProps;
     }
-    const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${DOMAIN}`);
+    const images = await getImagesOfDomain(DOMAIN);
     const faviconImage = images.find((image) => image.tagName === 'favicon-32');
 
     return { ...initialProps, faviconImage, DOMAIN };

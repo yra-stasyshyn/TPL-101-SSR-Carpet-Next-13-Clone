@@ -1,14 +1,16 @@
 /* eslint-disable @next/next/no-page-custom-font */
+import axios from "axios";
 import Head from "next/head";
 import PageGenerator from "../../generator/PageGenerator";
-import axios from "axios";
+import { getDomainFromReqHeader } from "../../helpers/getDomainFromReqHeader";
+import { getImagesOfDomain } from "../../helpers/getImagesOfDomain";
 
 const Page = ({ data, params, breadcrumbs, DOMAIN, images }) => {
 
   // GOOGLE SEARCH CONSOLE
-  const metaElem = data.google_search_console
-  const propsList = metaElem.replace("<meta ", "").replace(" />", "").split(" ").map(item => item.split("=").map(item => item.replaceAll("\"", "")))
-  const metaProps = Object.fromEntries(propsList)
+  const metaElem = data.google_search_console;
+  const propsList = metaElem.replace("<meta ", "").replace(" />", "").split(" ").map(item => item.split("=").map(item => item.replaceAll("\"", "")));
+  const metaProps = Object.fromEntries(propsList);
 
   return (
     <>
@@ -55,7 +57,8 @@ const Page = ({ data, params, breadcrumbs, DOMAIN, images }) => {
 
 export const getServerSideProps = async ({ req, params }) => {
   const { service, zip } = params;
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const domain = getDomainFromReqHeader(req.headers);
+  const images = await getImagesOfDomain(domain);
 
   if (/[A-Z]/.test("abc")) {
     return {
@@ -76,10 +79,10 @@ export const getServerSideProps = async ({ req, params }) => {
         permanent: false,
         params
       },
-    }
+    };
   }
 
-  const zipSplit = zip.split("-")
+  const zipSplit = zip.split("-");
 
   if (zipSplit.length > 1) {
     return {
@@ -88,10 +91,10 @@ export const getServerSideProps = async ({ req, params }) => {
         permanent: false,
         params
       },
-    }
+    };
   }
 
-  console.log(service)
+  console.log("service: ", service);
 
   const isDefault = new RegExp(`^${homeData.default_service}-${homeData.last_url_path}`, "i").test(service);
 
@@ -143,8 +146,6 @@ export const getServerSideProps = async ({ req, params }) => {
       notFound: true,
     };
   }
-
-  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
 
   return {
     props: {

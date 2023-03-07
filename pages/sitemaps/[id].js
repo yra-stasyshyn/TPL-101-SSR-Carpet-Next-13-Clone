@@ -1,10 +1,11 @@
 import { getSitemaps } from "../../sitemap-api";
+import { getDomainFromReqHeader } from "../../helpers/getDomainFromReqHeader";
 
 const Sitemap = () => {};
 
 export const getServerSideProps = async ({req, res, params }) => {
   const id = +params.id;
-  const baseUrl = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const baseUrl = getDomainFromReqHeader(req.headers);
 
   const sitemaps = await getSitemaps(baseUrl);
 

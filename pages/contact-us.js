@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-page-custom-font */
+import axios from "axios";
 import Head from "next/head";
 import PageGenerator from "../generator/PageGenerator";
-import axios from "axios";
+import { getDomainFromReqHeader } from "../helpers/getDomainFromReqHeader";
+import { getImagesOfDomain } from "../helpers/getImagesOfDomain";
 
 export default function Page({ data, breadcrumbs, DOMAIN, images }) {
   
@@ -51,15 +53,14 @@ export default function Page({ data, breadcrumbs, DOMAIN, images }) {
 }
 
 export const getServerSideProps = async ({req}) => {
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const domain = getDomainFromReqHeader(req.headers);
+  const images = await getImagesOfDomain(domain);
   const { data } = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
       domain: domain,
       type: "contact"
     }).toString()}`
   );
-  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
-
   const breadcrumbs = [
     {
       name: "Home",
