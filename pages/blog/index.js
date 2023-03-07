@@ -6,7 +6,6 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Breadcrumbs, Container } from "../../components/common";
 import { Footer, Nav } from "../../components/containers";
-import fs from "fs"
 import axios from "axios";
 
 const Page = ({ data, breadcrumbs, DOMAIN, images }) => {
@@ -144,7 +143,7 @@ const Page = ({ data, breadcrumbs, DOMAIN, images }) => {
 };
 
 export async function getServerSideProps({req}) {
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "riversidetowing.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
 
   const breadcrumbs = [
     {
@@ -157,14 +156,14 @@ export async function getServerSideProps({req}) {
     },
   ];
 
-  const data = await axios(
+  const { data } = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
       domain: domain,
       type: "blog",
     }).toString()}`
   );
 
-  const images = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
+  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
 
   return {
     props: {

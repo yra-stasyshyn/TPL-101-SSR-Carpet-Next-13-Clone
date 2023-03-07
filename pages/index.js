@@ -57,14 +57,14 @@ export default function Home({ data, DOMAIN, images }) {
 }
 
 export const getServerSideProps = async ({req}) => {
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "riversidetowing.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
-  const data = await axios(
+  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const { data } = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
       domain: domain,
       type: "contact"
     }).toString()}`
   );
-  const images = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
+  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
 
   return {
     props: {

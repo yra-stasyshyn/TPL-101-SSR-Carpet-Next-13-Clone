@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import Head from "next/head";
 import PageGenerator from "../../generator/PageGenerator";
-import fs from "fs"
 import axios from "axios";
 
 const Page = ({ data, params, breadcrumbs, DOMAIN, images }) => {
@@ -55,7 +54,7 @@ const Page = ({ data, params, breadcrumbs, DOMAIN, images }) => {
 
 export const getServerSideProps = async ({ req, res, params }) => {
   const { service } = params;
-  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "riversidetowing.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
+  const domain = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "")
 
   const homeData = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
@@ -123,7 +122,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
     };
   }
 
-  const data = await axios(
+  const { data } = await axios(
     `${process.env.API_URL}/api/site?${new URLSearchParams({
       domain: domain,
       type: "service",
@@ -137,7 +136,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
     };
   }
 
-  const images = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
+  const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${domain}`);
 
   return {
     props: {

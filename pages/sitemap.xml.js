@@ -3,7 +3,7 @@ import { getSitemaps } from "../sitemap-api";
 const Sitemap = () => {};
 
 export const getServerSideProps = async ({ req, res }) => {
-  const baseUrl = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "riversidetowing.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "");
+  const baseUrl = req.headers["x-forwarded-host"].indexOf("amplifyapp.com") > 0 ? "temeculacarpetcleaning.us" : req.headers["x-forwarded-host"].replace("https://", "").replace("http://", "").replace("www.", "");
   const sitemaps = await getSitemaps(baseUrl);
   const sitemapindex = `<?xml version="1.0" encoding="UTF-8"?>
   <?xml-stylesheet type="text/xsl" href="/${baseUrl}/sitemap.xsl" ?>

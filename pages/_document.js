@@ -52,11 +52,11 @@ MyDocument.getInitialProps = async (ctx) => {
   const { req } = ctx;
 
   if (!process.browser) {
-    const BASE_URL = 'riversidetowing.us';
-    if (!BASE_URL) {
+    const DOMAIN = 'temeculacarpetcleaning.us';
+    if (!DOMAIN) {
       return initialProps;
     }
-    const images = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${BASE_URL}`);
+    const { data: images } = await axios(`${process.env.API_URL}/api/template-images/domain?domain=${DOMAIN}`);
     const faviconImage = images.find((image) => image.tagName === 'favicon-32');
 
     return { ...initialProps, faviconImage, DOMAIN };
