@@ -154,5 +154,11 @@ export async function getSitemaps(baseUrl) {
     }),
   ];
 
-  return urls.length ? urls.splice(0, 200) : [];
+  const sitemaps = [];
+
+  while (urls.length) {
+    sitemaps.push(urls.splice(0, 200));
+  }
+
+  return sitemaps;
 }
