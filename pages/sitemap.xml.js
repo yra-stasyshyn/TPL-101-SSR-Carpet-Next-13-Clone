@@ -6,6 +6,7 @@ const Sitemap = () => {};
 export const getServerSideProps = async ({ req, res }) => {
   const baseUrl = getDomainFromReqHeader(req.headers);
   const sitemaps = await getSitemaps(baseUrl);
+  console.log("🚀 ~ file: sitemap.xml.js:9 ~ getServerSideProps ~ sitemaps:", sitemaps);
   const sitemapindex = `<?xml version="1.0" encoding="UTF-8"?>
   <?xml-stylesheet type="text/xsl" href="/${baseUrl}/sitemap.xsl" ?>
   
