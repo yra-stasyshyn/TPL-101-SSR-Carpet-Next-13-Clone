@@ -1,5 +1,5 @@
 // const baseUrl = process.env.DOMAIN
-import fs from "fs";
+import { getImagesOfDomain } from "../helpers/getImagesOfDomain";
 
 const withBaseUrl = (baseUrl, relativeUrl) =>
   `${!baseUrl.startsWith("https://") ? "https://" : ""}${
@@ -13,9 +13,7 @@ const withBaseUrl = (baseUrl, relativeUrl) =>
   }`;
 
 export async function getSitemaps(baseUrl) {
-  const imagess = JSON.parse(
-    fs.readFileSync(`${process.cwd()}/public/${baseUrl}/json/images.json`, { encoding: "utf-8" })
-  );
+  const imagess = await getImagesOfDomain(baseUrl);
 
   const starSetImage = imagess.find(
     (image) => image?.tagName === "star-set-yellow"

@@ -140,6 +140,10 @@ export const getServerSideProps = async ({ req, params }) => {
       service: service.replace(`-${homeData.last_url_path}`, ""),
     }).toString()}`
   );
+  const xxx = service.replace(`-${homeData.last_url_path}`, "");
+  console.log("🚀 ~ file: [zip].js:140 ~ getServerSideProps ~ zip:", zip);
+  console.log("🚀 ~ file: [zip].js:145 ~ getServerSideProps ~ xxx:", xxx);
+  console.log("🚀 ~ file: [zip].js:136 ~ getServerSideProps ~ data:", data);
 
   if (!data || !!data.response) {
     return {

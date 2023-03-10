@@ -1,22 +1,17 @@
-import axios from "axios";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import { getImagesOfDomain } from "../helpers/getImagesOfDomain";
+import fs from "fs";
+import { getDomainFromReqHeader } from "../helpers/getDomainFromReqHeader";
 
 const MyDocument = (props = {}) => {
   const { faviconImage, DOMAIN } = props;
-  // const images = JSON.parse(
-  //   fs.readFileSync(`${process.cwd()}/json/images.json`, { encoding: "utf-8" })
-  // );
-  // const faviconImage = images.find((image) => image.tagName === "favicon-32");
-  // const DOMAIN = process.env.BASE_UR;
+
   return (
     <Html lang="en">
       <Head>
         <meta charSet="UTF-8" />
         <meta name="theme-color" content="#97040c" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="manifest" href={`/manifest.json`} />
+        <link rel="manifest" href={`${DOMAIN}/manifest.json`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -47,21 +42,23 @@ const MyDocument = (props = {}) => {
       </body>
     </Html>
   );
-}
+};
 MyDocument.getInitialProps = async (ctx) => {
   const initialProps = await Document.getInitialProps(ctx);
   const { req } = ctx;
-
-  if (!process.browser) {
-    const DOMAIN = 'temeculacarpetcleaning.us';
+  if (req?.headers?.host) {
+    const DOMAIN = getDomainFromReqHeader(req.headers);
     if (!DOMAIN) {
       return initialProps;
     }
-    const images = await getImagesOfDomain(DOMAIN);
+    const images = JSON.parse(
+      fs.readFileSync(`${process.cwd()}/public/${DOMAIN}/json/images.json`, { encoding: "utf-8" })
+    );
     const faviconImage = images.find((image) => image.tagName === 'favicon-32');
 
     return { ...initialProps, faviconImage, DOMAIN };
   }
+
 
   return initialProps;
 };
